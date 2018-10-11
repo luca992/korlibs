@@ -72,11 +72,11 @@ suspend fun View?.tween(
 	callback: (Double) -> Unit = { }
 ): Unit {
 	if (this != null) {
-		withTimeout(300 + time.milliseconds * 2) {
+		withTimeout(300 + time.millisecondsLong * 2) {
 			suspendCancellableCoroutine<Unit> { c ->
 				val view = this@tween
 				//println("STARTED TWEEN at thread $currentThreadId")
-				TweenComponent(view, vs.toList(), time.milliseconds, easing, callback, c).attach()
+				TweenComponent(view, vs.toList(), time.millisecondsLong, easing, callback, c).attach()
 			}
 		}
 	}
@@ -138,8 +138,8 @@ fun V2<Int>.color(): V2<Int> = this.copy(interpolator = RGBA.Companion::blendRGB
 fun <V> V2<V>.easing(easing: Easing): V2<V> =
 	this.copy(interpolator = { a, b, ratio -> this.interpolator(a, b, easing(ratio)) })
 
-inline fun <V> V2<V>.delay(startTime: TimeSpan) = this.copy(startTime = startTime.milliseconds)
-inline fun <V> V2<V>.duration(duration: TimeSpan) = this.copy(duration = duration.milliseconds)
+inline fun <V> V2<V>.delay(startTime: TimeSpan) = this.copy(startTime = startTime.millisecondsLong)
+inline fun <V> V2<V>.duration(duration: TimeSpan) = this.copy(duration = duration.millisecondsLong)
 
 inline fun <V> V2<V>.linear() = this
 inline fun <V> V2<V>.easeIn() = this.withEasing(Easings.EASE_IN)

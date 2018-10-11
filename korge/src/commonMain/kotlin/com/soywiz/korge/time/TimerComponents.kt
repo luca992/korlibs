@@ -20,7 +20,7 @@ class TimerComponents(override val view: View) : UpdateComponent {
 		for (timer in timersIt) timer(ms.toInt())
 	}
 
-	suspend fun wait(time: TimeSpan) = waitMilliseconds(time.millisecondsDouble)
+	suspend fun wait(time: TimeSpan) = waitMilliseconds(time.milliseconds)
 
 	suspend fun waitFrame() = waitMilliseconds(1000.0 / 60.0)
 
@@ -62,4 +62,4 @@ suspend fun View.sleepFrame() = this.timers.waitFrame()
 
 suspend fun View.delay(time: TimeSpan) = this.timers.wait(time)
 
-fun View.timer(time: TimeSpan, callback: () -> Unit): Closeable = this.timers.waitMilliseconds(time.millisecondsDouble, callback)
+fun View.timer(time: TimeSpan, callback: () -> Unit): Closeable = this.timers.waitMilliseconds(time.milliseconds, callback)
