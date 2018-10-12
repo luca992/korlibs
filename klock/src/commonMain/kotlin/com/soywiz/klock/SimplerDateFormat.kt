@@ -4,7 +4,7 @@ import  kotlin.math.*
 
 class SimplerDateFormat(val format: String) {
 	companion object {
-		private val rx = Regex("('[\\w]+'|[\\w]+\\B[^Xx]|[Xx]{1,3}|[\\w]+)")
+		private val rx = Regex("""('[\w]+'|[\w]+\B[^Xx]|[Xx]{1,3}|[\w]+)""")
 		private val englishDaysOfWeek = listOf(
 			"sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"
 		)
@@ -42,9 +42,9 @@ class SimplerDateFormat(val format: String) {
 		if (v.startsWith("'")) {
 			"(" + Regex.escapeReplacement(v.trim('\'')) + ")"
 		} else if (v.startsWith("X", ignoreCase = true)) {
-			"([Z]|[+-]\\d\\d|[+-]\\d\\d\\d\\d|[+-]\\d\\d:\\d\\d)?"
+			"""([Z]|[+-]\d\d|[+-]\d\d\d\d|[+-]\d\d:\d\d)?"""
 		} else {
-			"([\\w\\+\\-]+[^Z^+^-])"
+			"""([\w\+\-]+)"""
 		}
 	} + "$")
 
@@ -151,7 +151,7 @@ class SimplerDateFormat(val format: String) {
 				"m", "mm" -> minute = value.toInt()
 				"s", "ss" -> second = value.toInt()
 				"S", "SS", "SSS", "SSSS", "SSSSS", "SSSSSS" -> {
-                    val base10length = log10(value.toDouble()).toInt()+1
+					val base10length = log10(value.toDouble()).toInt()+1
                     millisecond = if (base10length > 3) {
                         // only precision to millisecond supported, ignore the rest. ex: 9999999 => 999"
                         (value.toDouble() * 10.0.pow(-1* (base10length - 3))).toInt()
